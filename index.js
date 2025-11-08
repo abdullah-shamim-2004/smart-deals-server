@@ -73,7 +73,7 @@ async function run() {
     });
 
     // Create a products Collection (POST)
-    app.post("/products", async (req, res) => {
+    app.post("/products", VerifyFireBaseTokan, async (req, res) => {
       try {
         const products = await productsCollection.insertOne(req.body);
         res.status(201).json(products);
@@ -121,13 +121,13 @@ async function run() {
       const cursor = productsCollection
         .find()
         .sort({ created_at: -1 })
-        .limit(6);
+        .limit(8);
       const result = await cursor.toArray();
       res.send(result);
     });
 
     //Get a single data
-    app.get("/allproducts/:id", async (req, res) => {
+    app.get("/allproducts/:id",VerifyFireBaseTokan, async (req, res) => {
       const id = req.params.id;
       const result = await productsCollection.findOne({
         _id: new ObjectId(id),
